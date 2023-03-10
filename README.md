@@ -87,7 +87,8 @@ kafka-topics --bootstrap-server localhost:9092 --describe
       * **zookeeper**: Kafka depends on zookeeper. Zookeper is a generalized cluster management tool. It manages the cluster and prvides a consistent, distributed place to store cluster configuration. Zookeper coordinates communication throughout the cluster, adds and removes bokers, and monitors the status of nodes in the cluster. It is often installed alongside Kafka, but can be maintained on a completely separate set of servers.
       * **Controler**: In a Kafka cluster, one broker is dynamically desinated as the Controler. The controler coordinates the process of assigning partitions and data replicas to nodes in the cluster. https://cwiki.apache.org/confluence/display/KAFKA/Kafka+Controller+Internals
       * **Replication**: Kafka is designed with fault tolerance in mind. As a result, it includes built-in support for replication. Replication means storing multiple copies of a given piece of data. In Kafka every topic is given a configurable replication factor. The replication factor is the number of replicas that will be kept on dofferent brokers for each partition in the topic.
-      ```console
+     
+     ```console
     
     cloud_user@5f72d1f4c61c:~$ kafka-topics --bootstrap-server localhost:9092 --create --topic my-topic --partitions 3 --replication-factor 2
     ```
@@ -99,7 +100,7 @@ Topic:my-topic	PartitionCount:3	ReplicationFactor:2	Configs:segment.bytes=107374
 	Topic: my-topic	Partition: 1	Leader: 1	Replicas: 1,2	Isr: 1,2
 	Topic: my-topic	Partition: 2	Leader: 2	Replicas: 2,3	Isr: 2,3
  
-   ```
+   	```
    
      note: you can notice on the output we have a new term, **Leader**
     
