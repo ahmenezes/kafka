@@ -156,6 +156,52 @@ cloud_user@5f72d1f4c61c:~$ sudo systemctl status confluent*
     kafka-topics --bootstrap-server localhost:9092 --describe
     
     
+    Consuming Kafka Messages with Multiple Consumer Groups
+    
+    Consuming Kafka Messages with Multiple Consumer Groups
+Introduction
+In this hands-on lab, we will have the opportunity to consume data from a Kafka topic using multiple consumers groups.
+
+Solution
+Begin by logging in to the lab servers using the credentials provided on the hands-on lab page:
+
+ssh cloud_user@PUBLIC_IP_ADDRESS
+Set Up the First Consumer Group with One Consumer
+
+Set up the first consumer as the sole consumer in its group. We will consume some messages and save the output to /home/cloud_user/output/group1_consumer1.txt.
+
+The format should look like this:
+
+kafka-console-consumer --bootstrap-server localhost:9092 --topic inventory_purchases --group 1 > /home/cloud_user/output/group1_consumer1.txt
+Note: The --topic called inventory_purchases exists already and messages are being published to it.
+
+Let it run for a few seconds, and then use the Ctrl + C shortcut to verify the number of messages being consumed.
+We can check on the consumed messages by running:
+cat /home/cloud_user/output/group1_consumer1.txt
+Note: Sometimes the data may appear out of order, but there should not be any sequence gaps between messages.
+
+Set Up the Second Consumer Group with Two Consumers
+
+Create a consumer in a separate group, and store its output in /home/cloud_user/output/group1_consumer1.txt.
+It should look like this:
+
+kafka-console-consumer --bootstrap-server localhost:9092 --topic inventory_purchases --group 2 > /home/cloud_user/output/group2_consumer1.txt
+Create a second consumer in the same group, and store its output in /home/cloud_user/output/group2_consumer2.txt:
+kafka-console-consumer --bootstrap-server localhost:9092 --topic inventory_purchases --group 2 > /home/cloud_user/output/group2_consumer2.txt
+Use Ctrl + C on both of the consumers to view the number of messages being processed.
+Check the consumed messages on the first consumer with:
+cat /home/cloud_user/ouput/group2_consumer1.txt
+Check the consumed messages on the second consumer with:
+cat /home/cloud_user/output/group2_consumer2.txt
+Note: The first consumer that we ran will exhibit more messages due to the run time being a tad longer than the second consumer. A message that is not consumed by the first gets consumed by the second.
+
+Conclusion
+Congratulations - you've completed this hands-on lab!
+
+    
+    
+    
+    
   * Kafka and Java
   * Kafka Streams
   * Advanced Application Design Concepts
