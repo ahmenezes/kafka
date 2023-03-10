@@ -66,7 +66,7 @@ to check the topic creation
 kafka-topics --bootstrap-server localhost:9092 --describe
 
 
-```
+	```
 
       
       
@@ -117,9 +117,44 @@ Topic:my-topic	PartitionCount:3	ReplicationFactor:2	Configs:segment.bytes=107374
    Lab exercise
    
    
+   Solution
+Begin by logging in to the lab servers using the credentials provided on the hands-on lab page:
+
+ssh cloud_user@PUBLIC_IP_ADDRESS
+Create a Kafka Topic for the Inventory Purchase Data
+
+Create the topic using the kafka-topics command:
+kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 3 --partitions 6 --topic inventory_purchases
+Note: After the creation command is ran, we may encounter a warning indicating that we should simply avoid creating another topic with a '.' called inventory.purchases.
+
+Test the Setup by Publishing and Consuming Some Data
+
+Start a command line producer:
+kafka-console-producer --broker-list localhost:9092 --topic inventory_purchases
+Develop a few lines of data that can be used for testing purposes. Since we are working with merely test data, a specific format is not required. It could look like this:
+product: apples, quantity: 5
+product: lemons, quantity: 7
+Once the test images are published, we can exit the producer.
+
+Start up a command line consumer:
+
+kafka-console-consumer --bootstrap-server localhost:9092 --topic inventory_purchases --from-beginning
+Note: The --from-beginning flag is used because we want to target our test messages.
+
+We should see the test messages that were published earlier:
+product: apples, quantity: 5
+product: lemons, quantity: 7
+Conclusion
+Congratulations - you've completed this hands-on lab!
    
    
+   useful commands
    
+   sudo systemctl start confluent-kafka
+cloud_user@5f72d1f4c61c:~$ sudo systemctl status confluent*
+    kafka-topics --bootstrap-server localhost:9092 --describe
+    
+    
   * Kafka and Java
   * Kafka Streams
   * Advanced Application Design Concepts
