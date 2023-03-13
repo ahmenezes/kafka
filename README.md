@@ -203,6 +203,19 @@ Congratulations - you've completed this hands-on lab!
     
     
   * Kafka and Java
+	* Kafka and Java APIs
+		* Kafka provides a series of Application Programmming Interfaces (APIs). These make it easier to write applications that use Kafka.
+		* Kafka mantains a set of client libraries for Java, although thre are open-source projects providing similar support for a variety of other languages.
+		* Include these client libraries in your application to easil interact with Kafka.
+			* Producer API: Allows you to build producers athat publish messages to kafka
+			* Consumer API: Allows you to build consumers that read Kafka messages.
+			* Streams API: Allows you to read from input topics, transform data and output it to output topics
+			* Connect API: Allows you to build custom connectos, which pull from or push to specific external systems.
+			* AdminClient API: Allows you to manage and inspect like topics and brokers.
+
+
+
+
   * Kafka Streams
   * Advanced Application Design Concepts
 
