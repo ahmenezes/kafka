@@ -1,0 +1,21 @@
+
+Additional Resources
+Your supermarket company is using Kafka to handle data related to inventory. They have a topic called inventory_purchases that manages some of this data, but initial testing has determined that some configuration changes are needed.
+
+Implement the following configuration changes in the cluster:
+
+For the inventory_purchases topic, it is more important to maintain availability than data consistency since inventory errors can be reconciled later. Turn on unclean.leader.election for the inventory_purchases topic (unclean.leader.election.enable=true).
+The majority of uses cases planned for this cluster do not require a lengthy retention period. Set the default retention period for the cluster (log.retention.ms) to 3 days (259200000 ms).
+Change the retention period (retention.ms) for the existing inventory_purchases topic to 3 days (259200000 ms).
+
+Enable `unclean.leader.election` for the `inventory_purchases` Topic
+
+Set unclean.leader.election.enable to true for the topic:
+kafka-configs --zookeeper localhost:2181 --entity-type topics --entity-name inventory_purchases --alter --add-config unclean.leader.election.enable=true
+
+Set a 3-Day Retention Period for the Cluster Default and the Existing `inventory_purchases` Topic
+
+Set the default retention period for the cluster to 259200000 ms:
+kafka-configs --bootstrap-server localhost:9092 --entity-type brokers --entity-default --alter --add-config log.retention.ms=259200000
+Set the retention period for the topic to 259200000 ms:
+kafka-configs --zookeeper localhost:2181 --entity-type topics --entity-name inventory_purchases --alter --add-config retention.ms=259200000
