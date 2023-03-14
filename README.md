@@ -272,6 +272,30 @@ Congratulations - you've completed this hands-on lab!
   
   
   * Advanced Application Design Concepts
+	* Kafka Configuration
+		* Kafka objects such as brokers, topics, producers, and consumers can all be customized using configuration. Kafka uses the property file format for configuration. All configuration options are provided using key-value pairs, for example *broker=1*. 
+		* With Kafka, you can configure the following:
+			* Brokers
+			* Topics
+			* Clients (producers, Consumers, Stream Applications, etc)
+		* Broker configuration
+			* You can configure your Kafka broker using server.properties, the command line or even programmatically using the AdminClientAPI. Some broker configs can be changed dynamically (without a broker restart). https://kafka.apache.org/documentation/#configuration
+				* read-only - These configs require a broker restart in order to be updated
+				* per-broker - These can be dunamically updated for each individual broker
+				* cluster-wide - these config can ne updated per-broker, but the cluster-wide default can also be dynamically updated. 
+				* examples: https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1597951077832-05_01_Kafka%20Configuration.pdf
+		* Topic Design
+			* When using Kafka to address a given use case, it is important to design your topics for maximum performance. The two main considerations when designing topics are partitions and replication factor.
+			* Some questions to consider when designing your topics:
+				* How many brokers do you have? - The number of brokers limits the number of replicas
+				* What is your need for fault tolerance? - A higher replication factor means greater fault tolerance.
+				* How many consumers do you want to place in a consumer group for parallel processing? - You will need at least as many partitions as the number of consumers you expect to have on a single group.
+				* How much memory is available on each broker? - Kafka requires memory to process messages. The configuration setting *replica.fetch.max.bytes* (default ~1MB) determines the rough amount of memory you will need for each partition on a broker.
+		*  Metrics and Monitoring
+			*  Both Kafka and ZooKeeper offer metrics through *JMX*, a builtin Java technology for providing and accessing performance metric data. You can access metrics from Kafka brokers as well as your Kafka client applications. 
+			*  https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1597951119512-05_03_Metrics%20and%20Monitoring.pdf
+			*  https://kafka.apache.org/documentation/#monitoring
+			*  JConsole	
 
 
 
