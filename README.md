@@ -217,6 +217,49 @@ Congratulations - you've completed this hands-on lab!
 
 
   * Kafka Streams
+  	* Kafka streams allows us to build applications that process Kafka data in real time
+	* A Kafka Streams application is an application where both the input and the output are stored in Kafka topics.
+	* Kafka Streams is a client library (API) that makes it easy to build these applications
+	
+	* Kafka Streams transformations
+		Kafka Streams provides a robust set of tools for processing and transforming data. The Kafka cluser itself serves as the backend for data management and storage. Ther are two types of data transformations in Kafka Streams:
+		* Stateless transformations - Do not require any additional strage to manage the state (tipically they deal with one record at a time)
+			* Branch - Splits a tream into multiple streams based on a predicate
+			* Filter - Removes messages from the stream based on a condition
+			* FlatMap - Takes input records and turns them into a different set of records
+			* Foreach - Performs an arbitrary stateless operation on each record. This is a terminal operation and stops further processing. 
+			* Peek - Very similar to foreach, but unlike foreach, peek allows is not terminal and allows the existence of other operations.
+			
+			* Kafka Streams Aggegations - Stateless transformations, such as groupByKey ans groupBy can be used to group records that share the same key. Aggregaions are steteful transformations that always operate on these groups of records sharing the same key.
+				* Agregate - generates a new record from a calculation involving the grouped records
+				* Count - Counts the number of records for each grouped key
+				* Reduce - Combines the grouped records into a single record
+				
+		* Stateful transformations - Require a state store to manage the state.
+  
+  	* Kafka Streams Joins
+		* Joins are used to combine streams into one new stream
+		* Co-partitioning - When joining streams, the data must co-partitioned:
+			* Same number os partitions for int topics
+			* Same partitioning strategies for producers.
+			* Note: You can avoid the need for co-partitioning by using a GlobalKTable. With GlobalKTables, all instances of your streams application will populate the local table with data from all partitions.
+		* Join types
+			* Inner join - The new stream will contain only records that have a match in both joined streams
+			* Left join - The new stream will contain all records from the first stream, but only matching records from the joined stream.
+			* Outer join - The new stream will contain all records from both streams.
+		
+	* Kafka Streams Windowing
+		* Windows are very similar to groups in that they deal with a set of records with the same key. However, windows further subdivide groups into "time buckets"
+		* Tumbling time windows - windows are based on time periods that never overlap or have gaps between them.
+		* Hopping Time windows - Time-based, but can have overlaps or gaps between windows.
+		* Sliding time windows - These windows are dynamically based on the timestamps of records rather than a fixed point in time. They are only used in joins.
+		* Session Windows - Creates windows based on periods of activity. A group os records around the same timestamp will form a session window, whereas a period of "idle time" with no recods in the group will not have a window. 
+		* Late-Arriving records - In real-world scenarios, it is always possible to receive out-of-order data. When recods fall into a time window received after the end of that window's grace period, they become known as late-arriving records. You can specify a retention period for a window. Kafka Streams will retain old window buckets during this period so that late-arriving records can still be processed. Any records that arrive after the retention period has expired will not be processed.
+  
+  		
+			
+  
+  
   * Advanced Application Design Concepts
 
 
