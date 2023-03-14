@@ -256,7 +256,18 @@ Congratulations - you've completed this hands-on lab!
 		* Session Windows - Creates windows based on periods of activity. A group os records around the same timestamp will form a session window, whereas a period of "idle time" with no recods in the group will not have a window. 
 		* Late-Arriving records - In real-world scenarios, it is always possible to receive out-of-order data. When recods fall into a time window received after the end of that window's grace period, they become known as late-arriving records. You can specify a retention period for a window. Kafka Streams will retain old window buckets during this period so that late-arriving records can still be processed. Any records that arrive after the retention period has expired will not be processed.
   
-  		
+  	* Streams vs. Tables - Kafka streams models data in two primary ways: streams and tables
+  		* Streams - Each record is a self-contained piece of data in an unbounded set of data. New records do not replace an existing  piece of data with a new table.
+		* Tables - Records represent a current state that can be overwritten/updated
+  		* Use cases examples
+  			* Stream
+  				* Credit card transactions in real time
+  				* A real-time log of attendees checking in to a conference
+  				* A log of customer purchases which represent the removeal of items from a store's inventory.
+			* Table
+				* A user's current available credit card balance.
+				* A list of conference attendee names with a value indicating whether or not they have checked in.
+				* A set of data containing the quantity of each item in a store's inventory.
 			
   
   
