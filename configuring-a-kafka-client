@@ -1,0 +1,82 @@
+Additional Resources
+Your supermarket company has a Kafka producer application that is written in Java. You have been asked to implement some configuration changes in this application, and then execute it to test those changes. The base application code has already been written. You can clone a copy of the source code from GitHub to modify and test it. Implement the required configuration changes and run the program to verify that everything works as expected.
+
+These are the configuration changes you will need to implement for the producer:
+
+Set acks to all to ensure maximum data integrity in case a partition leader fails.
+A smaller amount of memory needs to allocated for the producer to buffer messages. Set buffer.memory to 12582912 (about 12 MB).
+The producer will need to clean up idle connections more quickly then the default setting specifies. Set connections.max.idle.ms to 300000 ms (5 minutes).
+You can find the producer project code at https://github.com/linuxacademy/content-ccdak-kafka-client-config-lab.git. Clone this project into /home/cloud_user on Broker 1. The producer is implemented in the Main class located at src/main/java/com/linuxacademy/ccdak/client/config/Main.java.
+
+You can execute the producer to test your changes by running this command while in the /home/cloud_user/content-ccdak-kafka-client-config-lab directory:
+
+./gradlew run
+If you want to view the output data published to the topic by the publisher, then use this command:
+
+kafka-console-consumer --bootstrap-server localhost:9092 --topic inventory_purchases --property print.key=true --from-beginning
+
+Configuring a Kafka Client
+Introduction
+In this hands-on lab, we will have the opportunity to explore the basics of configuring Kafka clients by making some configuration changes to a simple producer written in Java.
+
+Solution
+Begin by logging in to the lab servers using the credentials provided on the hands-on lab page:
+
+ssh cloud_user@PUBLIC_IP_ADDRESS
+Clone the Producer Source Code and Run it to Ensure that Everything Works
+
+Clone the producer source code into the home directory:
+cd ~/
+git clone https://github.com/linuxacademy/content-ccdak-kafka-client-config-lab.git
+To view the creation in the home directory, we can use the following command:
+ls
+Run the code to ensure it works before modifying it:
+cd content-ccdak-kafka-client-config-lab
+./gradlew run
+To view the output, consume the records from the inventory_purchases topic:
+kafka-console-consumer --bootstrap-server localhost:9092 --topic inventory_purchases --property print.key=true --from-beginning
+Implement the Required Configuration Changes in the Producer and Run the Program to Test Them
+
+Edit the Main class of the producer source code:
+vi src/main/java/com/linuxacademy/ccdak/client/config/Main.java
+Add the necessary configurations to the props object before the producer is instantiated. The final code should look something like this:
+package com.linuxacademy.ccdak.client.config;
+
+import java.util.Properties;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Properties props = new Properties();
+        props.put("bootstrap.servers", "localhost:9092");
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+
+        props.put("acks", "all");
+        props.put("buffer.memory", "12582912");
+        props.put("connections.max.idle.ms", "300000");
+
+        Producer<String, String> producer = new KafkaProducer<>(props);
+        producer.send(new ProducerRecord<>("inventory_purchases", "apples", "1"));
+        producer.send(new ProducerRecord<>("inventory_purchases", "apples", "3"));
+        producer.send(new ProducerRecord<>("inventory_purchases", "oranges", "12"));
+        producer.send(new ProducerRecord<>("inventory_purchases", "bananas", "25"));
+        producer.send(new ProducerRecord<>("inventory_purchases", "pears", "15"));
+        producer.send(new ProducerRecord<>("inventory_purchases", "apples", "6"));
+        producer.send(new ProducerRecord<>("inventory_purchases", "pears", "7"));
+        producer.send(new ProducerRecord<>("inventory_purchases", "oranges", "1"));
+        producer.send(new ProducerRecord<>("inventory_purchases", "grapes", "56"));
+        producer.send(new ProducerRecord<>("inventory_purchases", "oranges", "11"));
+        producer.close();
+    }
+
+}
+Save and exit.
+Execute the program:
+./gradlew run
+Consume the records from the inventory_purchases topic to verify that we can see the new records created by the producer:
+kafka-console-consumer --bootstrap-server localhost:9092 --topic inventory_purchases --property print.key=true --from-beginning
+Note: We should see more data than before due to the fact that the program was ran twice.
